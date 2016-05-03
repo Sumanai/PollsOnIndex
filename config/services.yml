@@ -1,0 +1,23 @@
+imports:
+    - { resource: tables.yml }
+
+services:
+    Sumanai.PollsOnIndex.listener:
+        class: Sumanai\PollsOnIndex\event\listener
+        arguments:
+            - '@auth'
+            - '@config'
+            - '@dbal.conn'
+            - '@request'
+            - '@template'
+            - '@user'
+            - '%tables.forums%'
+            - '%tables.poll_options%'
+            - '%tables.poll_votes%'
+            - '%tables.posts%'
+            - '%tables.topics%'
+            - '%tables.users%'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+        tags:
+            - { name: event.listener }

@@ -1,0 +1,39 @@
+{
+	"name": "Sumanai/PollsOnIndex",
+	"type": "phpbb-extension",
+	"description": "Display polls on index page",
+	"homepage": "https://sumanai.ru/",
+	"version": "1.0.0",
+	"time": "2016-04-23",
+	"license": "GPL-2.0",
+	"authors": [
+		{
+			"name": "Sumanai",
+			"homepage": "https://sumanai.ru/",
+			"email": "sumanai@ya.ru",
+			"role": "Developer"
+		},
+		{
+			"name": "dens",
+			"homepage": "http://aquaprint.club/",
+			"role": "Sponsor"
+		}
+	],
+	"require": {
+		"php": ">=5.3.3"
+	},
+	"require-dev": {
+		"phpbb/epv": "dev-master"
+	},
+	"extra": {
+		"display-name": "Polls on index",
+		"soft-require": {
+			"phpbb/phpbb": "3.1.*@dev"
+		},
+		"version-check": {
+			"host": "sumanai.ru",
+			"directory": "/ext/versioncheck",
+			"filename": "pollonindex.json"
+		}
+	}
+}

@@ -1,0 +1,145 @@
+<!-- IF .poll_row -->
+<div class="forabg">
+	<div class="inner">
+	<ul class="topiclist">
+		<li class="header">
+			<dl>
+				<dt>{POLLS_COUNT_LANG}</dt>
+				<dd class="control-buttons">
+					<!-- IF N_POLLS != 1 -->
+					<ul class="pagination">
+						<li class="previous"><a role="button" rel="prev" href="#">Пред.</a></li>
+						<li><a id="current-poll" href="#">1</a></li>
+						<li class="next"><a role="button" rel="next" href="#">След.</a></li>
+					</ul>
+					<!-- ENDIF -->
+				</dd>
+			</dl>
+		</li>
+	</ul>
+	<div class="topiclist" id="poll-row">
+	<!-- BEGIN poll_row -->
+		<form method="post" action="{poll_row.S_POLL_ACTION}" data-ajax="vote_poll" class="topic_poll panel" data-poll-number="{poll_row.S_ROW_COUNT}">
+
+			<div class="content">
+				<span style="margin: 1em 1.2em 0 2em; float: right; font-family: Verdana,Helvetica,Arial,sans-serif; font-size: 1.1em; color: #4C5D77">{L_AUTHOR}{L_COLON} {poll_row.POLL_AUTHOR} &raquo; {poll_row.POLL_TIME}</span>
+				<h2 class="poll-title"><a href="{poll_row.S_POLL_ACTION}">{poll_row.POLL_QUESTION} ({L_GO_TOPIC})</a></h2>
+				<p class="author">{poll_row.L_POLL_LENGTH}<!-- IF poll_row.S_CAN_VOTE and poll_row.L_POLL_LENGTH --><br /><!-- ENDIF --><!-- IF poll_row.S_CAN_VOTE --><span class="poll_max_votes">{poll_row.L_MAX_VOTES}</span><!-- ENDIF --></p>
+
+				<fieldset class="polls">
+				<!-- BEGIN poll_row.poll_option -->
+					<dl class="<!-- IF poll_row.poll_option.POLL_OPTION_VOTED -->voted<!-- ENDIF --><!-- IF poll_row.poll_option.POLL_OPTION_MOST_VOTES --> most-votes<!-- ENDIF -->"<!-- IF poll_row.poll_option.POLL_OPTION_VOTED --> title="{L_POLL_VOTED_OPTION}"<!-- ENDIF --> data-alt-text="{L_POLL_VOTED_OPTION}" data-poll-option-id="{poll_row.poll_option.POLL_OPTION_ID}">
+						<dt><!-- IF poll_row.S_CAN_VOTE --><label for="{poll_row.POLL_TOPIC_ID}_vote_{poll_row.poll_option.POLL_OPTION_ID}">{poll_row.poll_option.POLL_OPTION_CAPTION}</label><!-- ELSE -->{poll_row.poll_option.POLL_OPTION_CAPTION}<!-- ENDIF --></dt>
+						<!-- IF poll_row.S_CAN_VOTE --><dd style="width: auto;" class="poll_option_select">
+							<!-- IF poll_row.S_IS_MULTI_CHOICE -->
+								<input type="checkbox" name="vote_id[]" id="{poll_row.POLL_TOPIC_ID}_vote_{poll_row.poll_option.POLL_OPTION_ID}" value="{poll_row.poll_option.POLL_OPTION_ID}"<!-- IF poll_row.poll_option.POLL_OPTION_VOTED --> checked="checked"<!-- ENDIF --> />
+							<!-- ELSE -->
+								<input type="radio" name="vote_id[]" id="{poll_row.POLL_TOPIC_ID}_vote_{poll_row.poll_option.POLL_OPTION_ID}" value="{poll_row.poll_option.POLL_OPTION_ID}"<!-- IF poll_row.poll_option.POLL_OPTION_VOTED --> checked="checked"<!-- ENDIF --> />
+							<!-- ENDIF -->
+						</dd><!-- ENDIF -->
+						<dd class="resultbar<!-- IF not poll_row.S_DISPLAY_RESULTS --> hidden<!-- ENDIF -->">
+							<div class="<!-- IF poll_row.poll_option.POLL_OPTION_PCT < 20 -->pollbar1<!-- ELSEIF poll_row.poll_option.POLL_OPTION_PCT < 40 -->pollbar2<!-- ELSEIF poll_row.poll_option.POLL_OPTION_PCT < 60 -->pollbar3<!-- ELSEIF poll_row.poll_option.POLL_OPTION_PCT < 80 -->pollbar4<!-- ELSE -->pollbar5<!-- ENDIF -->" style="width:{poll_row.poll_option.POLL_OPTION_PERCENT_REL};">{poll_row.poll_option.POLL_OPTION_RESULT}</div>
+							<!-- IF poll_row.S_SHOW_VOTERS --><span class="poll_voters_box">{poll_row.poll_option.POLL_OPTION_VOTERS}</span><!-- ENDIF -->
+						</dd>
+						<dd class="poll_option_percent<!-- IF not poll_row.S_DISPLAY_RESULTS --> hidden<!-- ENDIF -->"><!-- IF poll_row.poll_option.POLL_OPTION_RESULT == 0 -->{L_NO_VOTES}<!-- ELSE -->{poll_row.poll_option.POLL_OPTION_PERCENT}<!-- ENDIF --></dd>
+					</dl>
+				<!-- END poll_row.poll_option -->
+
+					<dl class="poll_total_votes<!-- IF not poll_row.S_DISPLAY_RESULTS --> hidden<!-- ENDIF -->">
+						<dt>&nbsp;</dt>
+						<dd class="resultbar">
+							<!-- IF S_PHPBBEX -->
+								{L_TOTAL_VOTERS}{L_COLON} <span class="poll_total_vote_cnt">{poll_row.TOTAL_VOTERS}</span>
+							<!-- ELSE -->
+								{L_TOTAL_VOTES}{L_COLON} <span class="poll_total_vote_cnt">{poll_row.TOTAL_VOTES}</span>
+							<!-- ENDIF -->
+						</dd>
+					</dl>
+
+				<!-- IF poll_row.S_CAN_VOTE -->
+					<dl style="border-top: none;" class="poll_vote">
+						<dt>&nbsp;</dt>
+						<dd class="resultbar">
+							<!-- IF S_PHPBBEX -->
+								<input type="submit" name="update" value="<!-- IF poll_row.POLL_VOTED -->{L_SUBMIT_REVOTE}<!-- ELSE -->{L_SUBMIT_VOTE}<!-- ENDIF -->" class="button1" />
+								<input type="submit" name="unvote" value="{L_SUBMIT_UNVOTE}" class="button2<!-- IF not poll_row.POLL_VOTED --> hidden<!-- ENDIF -->" />
+							<!-- ELSE -->
+								<input type="submit" name="update" value="{L_SUBMIT_VOTE}" class="button1" />
+							<!-- ENDIF -->
+						</dd>
+					</dl>
+				<!-- ENDIF -->
+
+				<!-- IF not poll_row.S_DISPLAY_RESULTS -->
+					<dl style="border-top: none;" class="poll_view_results">
+						<dt>&nbsp;</dt>
+						<dd class="resultbar"><a href="{poll_row.U_VIEW_RESULTS}">{L_VIEW_RESULTS}</a></dd>
+					</dl>
+				<!-- ENDIF -->
+				</fieldset>
+				<div class="vote-submitted hidden">{L_VOTE_SUBMITTED}</div>
+			</div>
+
+			{S_FORM_TOKEN}
+			{S_HIDDEN_FIELDS}
+		</form>
+
+	<!-- END poll_row -->
+	</div>
+</div>
+</div>
+<style>
+.topic_poll.panel {
+	border-radius: 0;
+	margin-bottom: 0;
+}
+
+li.header .control-buttons {
+	float: right;
+	margin: -5px 5px 5px;
+	padding: 0;
+}
+
+.control-buttons > .pagination {
+	margin-top: 5px;
+}
+
+.control-buttons > .pagination > li {
+	float: left;
+	margin-left: 3px;
+}
+
+.control-buttons > .pagination > li > a {
+	color: #5c758c;
+	cursor: default;
+	height: 16px;
+	text-shadow: none;
+	padding: 2px 3px;
+}
+
+.control-buttons > .pagination > li.previous > a {
+	background-position: -30px 3px;
+}
+
+.control-buttons > .pagination > li.next > a {
+	background-position: -50px 3px;
+}
+
+.control-buttons > .pagination > li.previous > a:hover {
+	background-position: -30px -17px;
+}
+
+.control-buttons > .pagination > li.next > a:hover {
+	background-position: -50px -17px;
+}
+
+.control-buttons > .pagination > li > a:hover {
+	color: #FFF;
+	text-decoration: none;
+}
+
+#poll-row form + form {
+	display: none;
+}
+</style>
+<!-- ENDIF -->

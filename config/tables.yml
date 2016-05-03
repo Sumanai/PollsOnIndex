@@ -1,0 +1,3 @@
+parameters:
+    tables.poll_options: '%core.table_prefix%poll_options'
+    tables.poll_votes: '%core.table_prefix%poll_votes'
